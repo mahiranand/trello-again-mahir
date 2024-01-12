@@ -53,6 +53,6 @@ export const del = (pathParamUrl, setData, itemID) => {
       });
     })
     .catch(() => {
-      alert("Error Occured");
+      alert("Already Deleted!!");
     });
 };
