@@ -1,6 +1,7 @@
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
+import ItemsContainer from "../itemsContainer/ItemsContainer";
 // eslint-disable-next-line react/prop-types
 const ChecklistComponent = ({ cardId, name, id, deleteChecklist }) => {
   return (
@@ -35,7 +36,7 @@ const ChecklistComponent = ({ cardId, name, id, deleteChecklist }) => {
           Delete
         </Button>
       </div>
-      {/* <CheckItems cardId={cardId} id={id} /> */}
+      <ItemsContainer cardId={cardId} checkListId={id} />
     </div>
   );
 };

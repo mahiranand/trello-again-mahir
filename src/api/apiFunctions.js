@@ -53,6 +53,10 @@ export const del = (pathParamUrl, setData, itemID) => {
       });
     })
     .catch(() => {
-      alert("Already Deleted!!");
+      alert("Error Occurred!!");
     });
 };
+
+export const putState = (pathParamUrl, setData, itemID) => {
+  axios.put(`${baseUrl}/`)
+}
