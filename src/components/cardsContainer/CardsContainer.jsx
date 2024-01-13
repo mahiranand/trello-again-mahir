@@ -70,7 +70,8 @@ const CardsContainer = ({ id }) => {
               alignItems: "center",
             }}
             component="form"
-            onSubmit={() => {
+            onSubmit={(e) => {
+              e.preventDefault();
               addNewCard();
               setShowForm(false);
               setInputValue("");

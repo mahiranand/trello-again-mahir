@@ -63,7 +63,8 @@ const ListContainer = () => {
                 paddingBottom: "1rem",
               }}
               component="form"
-              onSubmit={() => {
+              onSubmit={(e) => {
+                e.preventDefault();
                 setFormDisplay(false);
                 setInputValue("");
                 createNewList();
