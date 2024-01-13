@@ -2,7 +2,7 @@ import { Button, Checkbox, FormControlLabel } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 // eslint-disable-next-line react/prop-types
-const Checkitem = ({ name, id, state, deleteCheckItem,  }) => {
+const Checkitem = ({ name, id, state, deleteCheckItem, updateCheckItem }) => {
   return (
     <div
       key={id}
@@ -19,7 +19,7 @@ const Checkitem = ({ name, id, state, deleteCheckItem,  }) => {
         control={
           <Checkbox
             onChange={() => {
-              // updateCheckItem(id);
+              updateCheckItem(id, state);
             }}
             checked={state == "complete" ? true : false}
             size="small"
@@ -30,7 +30,7 @@ const Checkitem = ({ name, id, state, deleteCheckItem,  }) => {
       <Button
         sx={{ color: "black" }}
         onClick={() => {
-          deleteCheckItem(id);
+          deleteCheckItem(id, state);
         }}
       >
         <DeleteIcon sx={{ fontSize: "1.2rem" }} />

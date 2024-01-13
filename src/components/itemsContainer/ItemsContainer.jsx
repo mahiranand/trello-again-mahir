@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { del, get, post } from "../../api/apiFunctions";
+import { del, get, post, putState } from "../../api/apiFunctions";
 import {
   Box,
   Button,
@@ -24,19 +24,6 @@ const ItemsContainer = ({ cardId, checkListId }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const findValue = () => {
-    if (checkitemsData.length == 0) {
-      return 0;
-    }
-    let count = 0;
-    for (let data of checkitemsData) {
-      if (data.state == "complete") {
-        count++;
-      }
-    }
-    return parseFloat(((count / checkitemsData.length) * 100).toFixed(2));
-  };
-
   const addCheckItem = () => {
     post(
       `checklists/${checkListId}/checkItems?name=${inputValue}`,
@@ -44,16 +31,29 @@ const ItemsContainer = ({ cardId, checkListId }) => {
     );
   };
 
-//   const updateCheckItem = (itemID) => {
-    
-//   };
+  const updateCheckItem = (itemID, state) => {
+    const newState = state == "complete" ? "incomplete" : "complete";
+    putState(
+      `cards/${cardId}/checkItem/${itemID}?state=${newState}`,
+      setCheckitemsData
+    );
+  };
 
   const deleteCheckItem = (itemId) => {
-    del(
-      `checklists/${checkListId}/checkItems/${itemId}`,
-      setCheckitemsData,
-      itemId
-    );
+    del(`checklists/${checkListId}/checkItems/${itemId}`, setCheckitemsData);
+  };
+
+  const findValue = () => {
+    if (checkitemsData.length === 0) {
+      return 0;
+    }
+    let count = 0;
+    for (let data of checkitemsData) {
+      if (data.state === "complete") {
+        count++;
+      }
+    }
+    return parseFloat(((count / checkitemsData.length) * 100).toFixed(2));
   };
 
   if (getData == "no-data") {
@@ -89,7 +89,7 @@ const ItemsContainer = ({ cardId, checkListId }) => {
               state={state}
               id={id}
               deleteCheckItem={deleteCheckItem}
-            //   updateCheckItem={updateCheckItem}
+              updateCheckItem={updateCheckItem}
             />
           ))}
         </FormGroup>

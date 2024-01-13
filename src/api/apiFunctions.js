@@ -57,6 +57,21 @@ export const del = (pathParamUrl, setData, itemID) => {
     });
 };
 
-export const putState = (pathParamUrl, setData, itemID) => {
-  axios.put(`${baseUrl}/`)
-}
+export const putState = (pathParamUrl, setData) => {
+  axios
+    .put(`${baseUrl}/${pathParamUrl}&key=${yourKey}&token=${yourToken}`)
+    .then((res) => {
+      setData((prevData) => {
+        const newData = prevData.map((data) => {
+          if (data.id == res.data.id) {
+            return res.data;
+          }
+          return data;
+        });
+        return newData;
+      });
+    })
+    .catch(() => {
+      alert("Error Occured!!");
+    });
+};
