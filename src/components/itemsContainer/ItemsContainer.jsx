@@ -40,7 +40,11 @@ const ItemsContainer = ({ cardId, checkListId }) => {
   };
 
   const deleteCheckItem = (itemId) => {
-    del(`checklists/${checkListId}/checkItems/${itemId}`, setCheckitemsData);
+    del(
+      `checklists/${checkListId}/checkItems/${itemId}`,
+      setCheckitemsData,
+      itemId
+    );
   };
 
   const findValue = () => {
