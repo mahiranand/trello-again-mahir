@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { get, post } from "../../api/apiFunctions";
-import Loading from "../loaders/Loading";
+import LoadingScreen from "../loaders/LoadingScreen";
 import Error from "../error/Error";
 import Board from "./Board";
 import FormCreateBoard from "./FormCreateBoard";
@@ -18,7 +18,7 @@ const BoardContainer = () => {
   };
 
   if (getData == "no-data") {
-    return <Loading />;
+    return <LoadingScreen />;
   } else if (getData == "got-data") {
     return (
       <div

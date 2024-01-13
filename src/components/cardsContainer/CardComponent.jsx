@@ -1,8 +1,12 @@
 import { Chip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CheckListContainer from "../checklistContainer/CheckListContainer";
+import { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
 const CardComponent = ({ name, id, deleteCard }) => {
+  const [showChecklist, setShowChecklist] = useState(false);
+
   return (
     <div key={id}>
       <Chip
@@ -20,17 +24,16 @@ const CardComponent = ({ name, id, deleteCard }) => {
           deleteCard(id);
         }}
         onClick={() => {
-          //   openCheckLists();
-          console.log("hlo");
+          setShowChecklist(true);
         }}
         deleteIcon={<DeleteIcon />}
       />
-      {/* <CheckList
+      <CheckListContainer
+        id={id}
         name={name}
-        open={openCardId === id}
-        handleClose={handleClose}
-        cardId={id}
-      /> */}
+        showChecklist={showChecklist}
+        setShowChecklist={setShowChecklist}
+      />
     </div>
   );
 };

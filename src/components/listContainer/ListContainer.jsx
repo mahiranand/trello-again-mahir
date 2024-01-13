@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { get, post, put } from "../../api/apiFunctions";
-import Loading from "../loaders/Loading";
 import Error from "../error/Error";
 import { Button, List, ListItem, Stack, TextField } from "@mui/material";
 import ListComponent from "./ListComponent";
 import CloseIcon from "@mui/icons-material/Close";
+import LoadingScreen from "../loaders/LoadingScreen";
 
 const ListContainer = () => {
   const { id } = useParams();
@@ -29,7 +29,7 @@ const ListContainer = () => {
   };
 
   if (getData == "no-data") {
-    return <Loading />;
+    return <LoadingScreen />;
   } else if (getData == "got-data") {
     return (
       <Stack
@@ -100,7 +100,7 @@ const ListContainer = () => {
                   variant="contained"
                   type="submit"
                   sx={{ backgroundColor: "coral" }}
-                  disabled={inputValue.trim() === ""}
+                  disabled={inputValue.trim() ? false : true}
                 >
                   Add List
                 </Button>

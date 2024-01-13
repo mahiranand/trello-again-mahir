@@ -29,7 +29,8 @@ const ListComponent = ({ name, id, archieveList }) => {
               borderRadius: "0.3rem",
               marginLeft: "1.3rem",
               fontSize: "1.3rem",
-              backgroundColor: "lawngreen",
+              color: "white",
+              backgroundColor: "coral",
               padding: "0.2rem 0.5rem",
             }}
           >

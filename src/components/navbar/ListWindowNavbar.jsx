@@ -31,7 +31,7 @@ const ListWindowNavbar = () => {
           <Chip
             label={`Board: ${name}`}
             sx={{
-              color: "black",
+              color: "white",
               fontSize: "1.2rem",
             }}
           />

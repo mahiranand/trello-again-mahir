@@ -102,7 +102,7 @@ const CardsContainer = ({ id }) => {
                 variant="contained"
                 type="submit"
                 sx={{ backgroundColor: "coral" }}
-                disabled={inputValue.trim == "" ? true : false}
+                disabled={inputValue.trim() == "" ? true : false}
               >
                 Add Card
               </Button>
