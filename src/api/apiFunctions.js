@@ -10,8 +10,12 @@ export const get = (pathParamUrl, setData, setGetData) => {
   axios
     .get(`${baseUrl}/${pathParamUrl}?key=${yourKey}&token=${yourToken}`)
     .then((res) => {
+      if (res.status != 200) {
+        setGetData("error");
+      } else {
+        setGetData("got-data");
+      }
       setData(res.data);
-      setGetData("got-data");
     })
     .catch(() => {
       setGetData("error");
