@@ -13,18 +13,6 @@ import AddIcon from "@mui/icons-material/Add";
 import ChecklistComponent from "./ChecklistComponent";
 import Error from "../error/Error";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "50%",
-  backgroundColor: "lightblue",
-  boxShadow: 24,
-  borderRadius: "2rem",
-  minWidth: '20rem',
-  p: 4,
-};
 
 // eslint-disable-next-line react/prop-types
 const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
@@ -50,7 +38,20 @@ const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
 
   return (
     <Modal open={showChecklist} onClose={() => setShowChecklist(false)}>
-      <Box sx={style}>
+      <Box
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "50%",
+          backgroundColor: "lightblue",
+          boxShadow: 24,
+          borderRadius: "2rem",
+          minWidth: "20rem",
+          p: 4,
+        }}
+      >
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <span
             style={{
