@@ -3,6 +3,7 @@ import BoardContainer from "./components/boardContainer/BoardContainer";
 import NavBar from "./components/navbar/NavBar";
 import ListContainer from "./components/listContainer/ListContainer";
 import ListWindowNavbar from "./components/navbar/ListWindowNavbar";
+import PageNotFound from "./components/error/PageNotFound";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             </>
           }
         />
+        <Route path="/*" element={<PageNotFound />} />
       </Routes>
     </>
   );
