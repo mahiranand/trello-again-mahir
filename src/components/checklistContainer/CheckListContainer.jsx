@@ -22,6 +22,7 @@ const style = {
   backgroundColor: "lightblue",
   boxShadow: 24,
   borderRadius: "2rem",
+  minWidth: '20rem',
   p: 4,
 };
 
