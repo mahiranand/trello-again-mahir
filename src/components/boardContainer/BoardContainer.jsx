@@ -23,6 +23,7 @@ const BoardContainer = () => {
     return (
       <div
         style={{
+          paddingBottom: '2%',
           margin: "2% 5%",
           display: "flex",
           flexWrap: "wrap",
