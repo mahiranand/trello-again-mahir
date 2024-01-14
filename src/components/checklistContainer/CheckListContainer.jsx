@@ -95,7 +95,7 @@ const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
           <Popover
             open={open}
             anchorEl={showForm}
-            onClose={() => setShowForm(false)}
+            onClose={() => setShowForm(null)}
             anchorOrigin={{
               vertical: "bottom",
               horizontal: "left",
@@ -109,9 +109,9 @@ const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
               }}
               component="form"
               onSubmit={(e) => {
-                addNewChecklist(inputValue);
-                setInputValue("");
                 e.preventDefault();
+                setInputValue("");
+                addNewChecklist(inputValue);
                 setShowForm(null);
               }}
             >

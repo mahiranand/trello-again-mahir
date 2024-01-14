@@ -14,8 +14,8 @@ export const get = (pathParamUrl, setData, setGetData) => {
         setGetData("error");
       } else {
         setGetData("got-data");
+        setData(res.data);
       }
-      setData(res.data);
     })
     .catch(() => {
       setGetData("error");
