@@ -152,7 +152,7 @@ const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
               display: "flex",
               flexDirection: "column",
               gap: "1.7rem",
-              maxHeight: "60vh",
+              maxHeight: "50vh",
               overflowY: "scroll",
               msOverflowStyle: "none",
               scrollbarWidth: "none",
