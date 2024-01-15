@@ -16,7 +16,7 @@ import SendIcon from "@mui/icons-material/Send";
 const ItemsContainer = ({ cardId, checkListId }) => {
   const [checkitemsData, setCheckitemsData] = useState([]);
   const [getData, setGetData] = useState("no-data");
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(null);
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
@@ -77,6 +77,8 @@ const ItemsContainer = ({ cardId, checkListId }) => {
       });
   };
 
+  const open = Boolean(showForm);
+
   const findValue = () => {
     if (checkitemsData.length === 0) {
       return 0;
@@ -127,7 +129,7 @@ const ItemsContainer = ({ cardId, checkListId }) => {
             />
           ))}
         </FormGroup>
-        {showForm ? (
+        {open ? (
           <Box
             sx={{
               display: "flex",
@@ -144,7 +146,7 @@ const ItemsContainer = ({ cardId, checkListId }) => {
             }}
           >
             <TextField
-              autoFocus={showForm}
+              autoFocus={open}
               value={inputValue}
               id="outlined-basic"
               label="Item Name"
