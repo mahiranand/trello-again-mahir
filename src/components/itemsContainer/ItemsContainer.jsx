@@ -54,11 +54,16 @@ const ItemsContainer = ({ cardId, checkListId }) => {
   };
 
   const deleteCheckItem = (itemId) => {
-    del(
-      `checklists/${checkListId}/checkItems/${itemId}`,
-      setCheckitemsData,
-      itemId
-    );
+    del(`checklists/${checkListId}/checkItems/${itemId}`)
+      .then(() => {
+        setCheckitemsData((prevData) => {
+          const newData = prevData.filter(({ id }) => id !== itemId);
+          return newData;
+        });
+      })
+      .catch(() => {
+        alert("Error Occurred!!");
+      });
   };
 
   const findValue = () => {

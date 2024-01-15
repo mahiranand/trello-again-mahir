@@ -47,7 +47,16 @@ const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
   };
 
   const deleteChecklist = (checklistId) => {
-    del(`cards/${id}/checklists/${checklistId}`, setChecklistData, checklistId);
+    del(`cards/${id}/checklists/${checklistId}`)
+      .then(() => {
+        setChecklistData((prevData) => {
+          const newData = prevData.filter(({ id }) => id !== checklistId);
+          return newData;
+        });
+      })
+      .catch(() => {
+        alert("Error Occurred!!");
+      });
   };
 
   const open = Boolean(showForm);

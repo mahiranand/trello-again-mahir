@@ -40,7 +40,16 @@ const CardsContainer = ({ id }) => {
   };
 
   const deleteCard = (cardId) => {
-    del(`cards/${cardId}`, setCardsData, cardId);
+    del(`cards/${cardId}`)
+      .then(() => {
+        setCardsData((prevData) => {
+          const newData = prevData.filter(({ id }) => id !== cardId);
+          return newData;
+        });
+      })
+      .catch(() => {
+        alert("Error Occurred!!");
+      });
   };
 
   if (getData == "no-data") {

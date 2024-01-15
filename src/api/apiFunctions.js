@@ -22,18 +22,8 @@ export const put = (URL, setData) => {
     });
 };
 
-export const del = (URL, setData, itemID) => {
-  api
-    .delete(`${URL}`)
-    .then(() => {
-      setData((prevData) => {
-        const newData = prevData.filter(({ id }) => id !== itemID);
-        return newData;
-      });
-    })
-    .catch(() => {
-      alert("Error Occurred!!");
-    });
+export const del = (URL) => {
+  return api.delete(URL);
 };
 
 export const putState = (URL, setData) => {
