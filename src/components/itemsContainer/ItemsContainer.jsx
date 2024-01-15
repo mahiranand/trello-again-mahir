@@ -20,15 +20,29 @@ const ItemsContainer = ({ cardId, checkListId }) => {
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    get(`checklists/${checkListId}/checkItems`, setCheckitemsData, setGetData);
+    get(`checklists/${checkListId}/checkItems`)
+      .then((res) => {
+        if (res.status == 200) {
+          setGetData("got-data");
+          setCheckitemsData(res.data);
+        } else {
+          setGetData("error");
+        }
+      })
+      .catch(() => {
+        setGetData("error");
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addCheckItem = () => {
-    post(
-      `checklists/${checkListId}/checkItems?name=${inputValue}`,
-      setCheckitemsData
-    );
+    post(`checklists/${checkListId}/checkItems?name=${inputValue}`)
+      .then((res) => {
+        setCheckitemsData((prevData) => [...prevData, res.data]);
+      })
+      .catch(() => {
+        alert("Error Occured");
+      });
   };
 
   const updateCheckItem = (itemID, state) => {

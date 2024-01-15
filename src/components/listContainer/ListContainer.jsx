@@ -18,12 +18,29 @@ const ListContainer = () => {
   const [formDisplay, setFormDisplay] = useState(false);
 
   useEffect(() => {
-    get(`boards/${id}/lists`, setListData, setGetData);
+    get(`boards/${id}/lists`)
+      .then((res) => {
+        if (res.status == 200) {
+          setGetData("got-data");
+          setListData(res.data);
+        } else {
+          alert("Error Occured");
+        }
+      })
+      .catch(() => {
+        setGetData("error");
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const createNewList = () => {
-    post(`boards/${id}/lists?name=${inputValue}`, setListData);
+    post(`boards/${id}/lists?name=${inputValue}`)
+      .then((res) => {
+        setListData((prevData) => [...prevData, res.data]);
+      })
+      .catch(() => {
+        alert("Error Occured");
+      });
   };
 
   const archieveList = (listId) => {

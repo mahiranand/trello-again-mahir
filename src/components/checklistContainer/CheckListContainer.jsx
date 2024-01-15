@@ -13,7 +13,6 @@ import AddIcon from "@mui/icons-material/Add";
 import ChecklistComponent from "./ChecklistComponent";
 import Error from "../error/Error";
 
-
 // eslint-disable-next-line react/prop-types
 const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
   const [checklistData, setChecklistData] = useState([]);
@@ -22,12 +21,29 @@ const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    get(`cards/${id}/checklists`, setChecklistData, setGetData);
+    get(`cards/${id}/checklists`)
+      .then((res) => {
+        if (res.status == 200) {
+          setGetData("got-data");
+          setChecklistData(res.data);
+        } else {
+          alert("Error Occured");
+        }
+      })
+      .catch(() => {
+        setGetData("error");
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addNewChecklist = (name) => {
-    post(`cards/${id}/checklists?name=${name}`, setChecklistData);
+    post(`cards/${id}/checklists?name=${name}`)
+      .then((res) => {
+        setChecklistData((prevData) => [...prevData, res.data]);
+      })
+      .catch(() => {
+        alert("Error Occured");
+      });
   };
 
   const deleteChecklist = (checklistId) => {

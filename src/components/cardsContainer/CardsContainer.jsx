@@ -14,12 +14,29 @@ const CardsContainer = ({ id }) => {
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    get(`lists/${id}/cards`, setCardsData, setGetData);
+    get(`lists/${id}/cards`)
+      .then((res) => {
+        if (res.status == 200) {
+          setGetData("got-data");
+          setCardsData(res.data);
+        } else {
+          alert("Error Occured");
+        }
+      })
+      .catch(() => {
+        setGetData("error");
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addNewCard = () => {
-    post(`cards?name=${inputValue}&idList=${id}`, setCardsData);
+    post(`cards?name=${inputValue}&idList=${id}`)
+      .then((res) => {
+        setCardsData((prevData) => [...prevData, res.data]);
+      })
+      .catch(() => {
+        alert("Error Occured");
+      });
   };
 
   const deleteCard = (cardId) => {

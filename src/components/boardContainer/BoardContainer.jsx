@@ -10,11 +10,27 @@ const BoardContainer = () => {
   const [getData, setGetData] = useState("no-data");
 
   useEffect(() => {
-    get("members/me/boards", setBoardData, setGetData);
+    get("members/me/boards")
+      .then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          setBoardData(res.data);
+          setGetData("got-data");
+        } else alert("Error Occurred !!");
+      })
+      .catch(() => {
+        setGetData("error");
+      });
   }, []);
 
   const makeNewBoard = (name) => {
-    post(`boards/?name=${name}`, setBoardData);
+    post(`boards/?name=${name}`)
+      .then((res) => {
+        setBoardData((prevData) => [...prevData, res.data]);
+      })
+      .catch(() => {
+        alert("Error Occured");
+      });
   };
 
   if (getData == "no-data") {
@@ -23,7 +39,7 @@ const BoardContainer = () => {
     return (
       <div
         style={{
-          paddingBottom: '2%',
+          paddingBottom: "2%",
           margin: "2% 5%",
           display: "flex",
           flexWrap: "wrap",

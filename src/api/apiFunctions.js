@@ -1,30 +1,11 @@
 import { api } from "./axiosConfig";
 
-export const get = (URL, setData, setGetData) => {
-  api
-    .get(`${URL}`)
-    .then((res) => {
-      if (res.status != 200) {
-        setGetData("error");
-      } else {
-        setGetData("got-data");
-        setData(res.data);
-      }
-    })
-    .catch(() => {
-      setGetData("error");
-    });
+export const get = (URL) => {
+  return api.get(URL);
 };
 
-export const post = (URL, setData) => {
-  api
-    .post(`${URL}`)
-    .then((res) => {
-      setData((prevData) => [...prevData, res.data]);
-    })
-    .catch(() => {
-      alert("Error Occured");
-    });
+export const post = (URL) => {
+  return api.post(URL);
 };
 
 export const put = (URL, setData) => {
