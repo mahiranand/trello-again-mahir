@@ -1,14 +1,8 @@
-import axios from "axios";
+import { api } from "./axiosConfig";
 
-const yourKey = "e329af9483b37135d074e667f5f48020";
-const yourToken =
-  "ATTA7b429b51abd4c5a77e17cc2148635edce084bc45b889d6a7c21bbadaea2709fc28232EFF";
-
-const baseUrl = "https://api.trello.com/1";
-
-export const get = (pathParamUrl, setData, setGetData) => {
-  axios
-    .get(`${baseUrl}/${pathParamUrl}?key=${yourKey}&token=${yourToken}`)
+export const get = (URL, setData, setGetData) => {
+  api
+    .get(`${URL}`)
     .then((res) => {
       if (res.status != 200) {
         setGetData("error");
@@ -22,9 +16,9 @@ export const get = (pathParamUrl, setData, setGetData) => {
     });
 };
 
-export const post = (pathParamUrl, setData) => {
-  axios
-    .post(`${baseUrl}/${pathParamUrl}&key=${yourKey}&token=${yourToken}`)
+export const post = (URL, setData) => {
+  api
+    .post(`${URL}`)
     .then((res) => {
       setData((prevData) => [...prevData, res.data]);
     })
@@ -33,9 +27,9 @@ export const post = (pathParamUrl, setData) => {
     });
 };
 
-export const put = (pathParamUrl, setData) => {
-  axios
-    .put(`${baseUrl}/${pathParamUrl}&key=${yourKey}&token=${yourToken}`)
+export const put = (URL, setData) => {
+  api
+    .put(`${URL}`)
     .then((res) => {
       setData((prevData) => {
         const newData = prevData.filter(({ id }) => id !== res.data.id);
@@ -47,9 +41,9 @@ export const put = (pathParamUrl, setData) => {
     });
 };
 
-export const del = (pathParamUrl, setData, itemID) => {
-  axios
-    .delete(`${baseUrl}/${pathParamUrl}?key=${yourKey}&token=${yourToken}`)
+export const del = (URL, setData, itemID) => {
+  api
+    .delete(`${URL}`)
     .then(() => {
       setData((prevData) => {
         const newData = prevData.filter(({ id }) => id !== itemID);
@@ -61,9 +55,9 @@ export const del = (pathParamUrl, setData, itemID) => {
     });
 };
 
-export const putState = (pathParamUrl, setData) => {
-  axios
-    .put(`${baseUrl}/${pathParamUrl}&key=${yourKey}&token=${yourToken}`)
+export const putState = (URL, setData) => {
+  api
+    .put(`${URL}`)
     .then((res) => {
       setData((prevData) => {
         const newData = prevData.map((data) => {
