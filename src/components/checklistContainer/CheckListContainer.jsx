@@ -6,32 +6,30 @@ import {
   Popover,
   TextField,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { del, get, post } from "../../api/apiFunctions";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import ChecklistComponent from "./ChecklistComponent";
 import Error from "../error/Error";
+import { initialState, reducer } from "../../reducer/stateAndReducer";
 
 // eslint-disable-next-line react/prop-types
 const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
-  const [checklistData, setChecklistData] = useState([]);
-  const [getData, setGetData] = useState("no-data");
-  const [showForm, setShowForm] = useState(null);
-  const [inputValue, setInputValue] = useState("");
+  const [{ data: checklistData, getData, showForm, inputValue }, dispatch] =
+    useReducer(reducer, initialState);
 
   useEffect(() => {
     get(`cards/${id}/checklists`)
       .then((res) => {
         if (res.status == 200) {
-          setGetData("got-data");
-          setChecklistData(res.data);
+          dispatch({ type: "setData", payload: res.data });
         } else {
           alert("Error Occured");
         }
       })
       .catch(() => {
-        setGetData("error");
+        dispatch({ type: "error" });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -39,7 +37,7 @@ const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
   const addNewChecklist = (name) => {
     post(`cards/${id}/checklists?name=${name}`)
       .then((res) => {
-        setChecklistData((prevData) => [...prevData, res.data]);
+        dispatch({ type: "addData", payload: res.data });
       })
       .catch(() => {
         alert("Error Occured");
@@ -49,10 +47,7 @@ const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
   const deleteChecklist = (checklistId) => {
     del(`cards/${id}/checklists/${checklistId}`)
       .then(() => {
-        setChecklistData((prevData) => {
-          const newData = prevData.filter(({ id }) => id !== checklistId);
-          return newData;
-        });
+        dispatch({ type: "deleteData", payload: checklistId });
       })
       .catch(() => {
         alert("Error Occurred!!");
@@ -112,7 +107,7 @@ const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
             disableRipple
             endIcon={<AddIcon />}
             onClick={(e) => {
-              setShowForm(e.currentTarget);
+              dispatch({ type: "toggleOpen", payload: e.currentTarget });
             }}
           >
             Add
@@ -120,7 +115,7 @@ const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
           <Popover
             open={open}
             anchorEl={showForm}
-            onClose={() => setShowForm(null)}
+            onClose={() => dispatch({ type: "toggleOpen", payload: null })}
             anchorOrigin={{
               vertical: "bottom",
               horizontal: "left",
@@ -135,9 +130,8 @@ const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
               component="form"
               onSubmit={(e) => {
                 e.preventDefault();
-                setInputValue("");
                 addNewChecklist(inputValue);
-                setShowForm(null);
+                dispatch({ type: "submit" });
               }}
             >
               <TextField
@@ -148,7 +142,9 @@ const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
                 variant="outlined"
                 size="small"
                 sx={{ paddingBottom: "0.5rem" }}
-                onChange={(e) => setInputValue(e.target.value)}
+                onChange={(e) => {
+                  dispatch({ type: "input", payload: e.target.value });
+                }}
               />
               <Button
                 sx={{ color: "black", backgroundColor: "lightsteelblue" }}
