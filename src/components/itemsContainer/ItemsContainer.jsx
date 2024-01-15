@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { del, get, post, put } from "../../api/apiFunctions";
 import {
   Box,
@@ -11,26 +11,24 @@ import {
 import ItemError from "../error/ItemError";
 import Checkitem from "./Checkitem";
 import SendIcon from "@mui/icons-material/Send";
+import { initialState, reducer } from "../../reducer/stateAndReducer";
 
 // eslint-disable-next-line react/prop-types
 const ItemsContainer = ({ cardId, checkListId }) => {
-  const [checkitemsData, setCheckitemsData] = useState([]);
-  const [getData, setGetData] = useState("no-data");
-  const [showForm, setShowForm] = useState(null);
-  const [inputValue, setInputValue] = useState("");
+  const [{ data: checkitemsData, getData, showForm, inputValue }, dispatch] =
+    useReducer(reducer, initialState);
 
   useEffect(() => {
     get(`checklists/${checkListId}/checkItems`)
       .then((res) => {
         if (res.status == 200) {
-          setGetData("got-data");
-          setCheckitemsData(res.data);
+          dispatch({ type: "setData", payload: res.data });
         } else {
-          setGetData("error");
+          dispatch({ type: "error" });
         }
       })
       .catch(() => {
-        setGetData("error");
+        dispatch({ type: "error" });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -38,7 +36,7 @@ const ItemsContainer = ({ cardId, checkListId }) => {
   const addCheckItem = () => {
     post(`checklists/${checkListId}/checkItems?name=${inputValue}`)
       .then((res) => {
-        setCheckitemsData((prevData) => [...prevData, res.data]);
+        dispatch({ type: "addData", payload: res.data });
       })
       .catch(() => {
         alert("Error Occured");
@@ -49,15 +47,7 @@ const ItemsContainer = ({ cardId, checkListId }) => {
     const newState = state == "complete" ? "incomplete" : "complete";
     put(`cards/${cardId}/checkItem/${itemID}?state=${newState}`)
       .then((res) => {
-        setCheckitemsData((prevData) => {
-          const newData = prevData.map((data) => {
-            if (data.id == res.data.id) {
-              return res.data;
-            }
-            return data;
-          });
-          return newData;
-        });
+        dispatch({ type: "toggleCheckBox", payload: res.data });
       })
       .catch(() => {
         alert("Error Occured!!");
@@ -67,10 +57,7 @@ const ItemsContainer = ({ cardId, checkListId }) => {
   const deleteCheckItem = (itemId) => {
     del(`checklists/${checkListId}/checkItems/${itemId}`)
       .then(() => {
-        setCheckitemsData((prevData) => {
-          const newData = prevData.filter(({ id }) => id !== itemId);
-          return newData;
-        });
+        dispatch({ type: "deleteData", payload: itemId });
       })
       .catch(() => {
         alert("Error Occurred!!");
@@ -141,8 +128,7 @@ const ItemsContainer = ({ cardId, checkListId }) => {
             onSubmit={(e) => {
               e.preventDefault();
               addCheckItem();
-              setShowForm(false);
-              setInputValue("");
+              dispatch({ type: "submit" });
             }}
           >
             <TextField
@@ -152,7 +138,9 @@ const ItemsContainer = ({ cardId, checkListId }) => {
               label="Item Name"
               variant="outlined"
               size="small"
-              onChange={(e) => setInputValue(e.target.value)}
+              onChange={(e) =>
+                dispatch({ type: "input", payload: e.target.value })
+              }
             />
             <Button
               sx={{
@@ -171,7 +159,7 @@ const ItemsContainer = ({ cardId, checkListId }) => {
             variant="contained"
             size="small"
             sx={{ marginLeft: "0.75rem", marginTop: "0.75rem" }}
-            onClick={() => setShowForm(true)}
+            onClick={() => dispatch({ type: "toggleOpen", payload: true })}
           >
             Add Item
           </Button>

@@ -51,5 +51,19 @@ export const reducer = (state, action) => {
         showForm: null,
       };
     }
+    case "toggleCheckBox": {
+      return {
+        ...state,
+        data: state.data.map((data) => {
+          if (action.payload.id == data.id) {
+            return action.payload;
+          }
+          return data;
+        }),
+      };
+    }
+    default: {
+      return state;
+    }
   }
 };

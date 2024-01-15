@@ -25,7 +25,7 @@ const CheckListContainer = ({ id, name, showChecklist, setShowChecklist }) => {
         if (res.status == 200) {
           dispatch({ type: "setData", payload: res.data });
         } else {
-          alert("Error Occured");
+          dispatch({ type: "error" });
         }
       })
       .catch(() => {
