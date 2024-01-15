@@ -8,39 +8,10 @@ export const post = (URL) => {
   return api.post(URL);
 };
 
-export const put = (URL, setData) => {
-  api
-    .put(`${URL}`)
-    .then((res) => {
-      setData((prevData) => {
-        const newData = prevData.filter(({ id }) => id !== res.data.id);
-        return newData;
-      });
-    })
-    .catch(() => {
-      alert("Error Occured");
-    });
+export const put = (URL) => {
+  return api.put(URL);
 };
 
 export const del = (URL) => {
   return api.delete(URL);
-};
-
-export const putState = (URL, setData) => {
-  api
-    .put(`${URL}`)
-    .then((res) => {
-      setData((prevData) => {
-        const newData = prevData.map((data) => {
-          if (data.id == res.data.id) {
-            return res.data;
-          }
-          return data;
-        });
-        return newData;
-      });
-    })
-    .catch(() => {
-      alert("Error Occured!!");
-    });
 };

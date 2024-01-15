@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { del, get, post, putState } from "../../api/apiFunctions";
+import { del, get, post, put } from "../../api/apiFunctions";
 import {
   Box,
   Button,
@@ -47,10 +47,21 @@ const ItemsContainer = ({ cardId, checkListId }) => {
 
   const updateCheckItem = (itemID, state) => {
     const newState = state == "complete" ? "incomplete" : "complete";
-    putState(
-      `cards/${cardId}/checkItem/${itemID}?state=${newState}`,
-      setCheckitemsData
-    );
+    put(`cards/${cardId}/checkItem/${itemID}?state=${newState}`)
+      .then((res) => {
+        setCheckitemsData((prevData) => {
+          const newData = prevData.map((data) => {
+            if (data.id == res.data.id) {
+              return res.data;
+            }
+            return data;
+          });
+          return newData;
+        });
+      })
+      .catch(() => {
+        alert("Error Occured!!");
+      });
   };
 
   const deleteCheckItem = (itemId) => {

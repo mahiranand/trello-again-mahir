@@ -44,7 +44,16 @@ const ListContainer = () => {
   };
 
   const archieveList = (listId) => {
-    put(`lists/${listId}?closed=true`, setListData);
+    put(`lists/${listId}?closed=true`)
+      .then((res) => {
+        setListData((prevData) => {
+          const newData = prevData.filter(({ id }) => id !== res.data.id);
+          return newData;
+        });
+      })
+      .catch(() => {
+        alert("Error Occured");
+      });
   };
 
   if (getData == "no-data") {
