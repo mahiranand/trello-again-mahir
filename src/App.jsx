@@ -4,6 +4,8 @@ import NavBar from "./components/navbar/NavBar";
 import ListContainer from "./components/listContainer/ListContainer";
 import PageNotFound from "./components/error/PageNotFound";
 
+//redux
+
 function App() {
   return (
     <>
