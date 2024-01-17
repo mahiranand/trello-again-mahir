@@ -11,8 +11,7 @@ const BoardContainer = () => {
 
   useEffect(() => {
     get("members/me/boards")
-      .then((res) => {
-        console.log(res);
+      .then((res) => {ß
         if (res.status == 200) {
           setBoardData(res.data);
           setGetData("got-data");
