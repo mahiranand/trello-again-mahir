@@ -17,8 +17,6 @@ const BoardContainer = () => {
     get("members/me/boards")
       .then((res) => {
         if (res.status == 200) {
-          // setBoardData(res.data);
-          console.log(res.data);
           const value = res.data;
           dispatch(displayBoard(value));
           setGetData("got-data");
@@ -27,6 +25,7 @@ const BoardContainer = () => {
       .catch(() => {
         setGetData("error");
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const makeNewBoard = (name) => {

@@ -8,11 +8,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import LoadingScreen from "../loaders/LoadingScreen";
 import ListWindowNavbar from "../navbar/ListWindowNavbar";
 import Navbar from "../navbar/NavBar";
+import { useDispatch, useSelector } from "react-redux";
+import { displayList } from "../../redux/slice/listSlice";
 
 const ListContainer = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const { listData } = useSelector((state) => state.lists);
 
-  const [listData, setListData] = useState([]);
+  // const [listData, setListData] = useState([]);
   const [getData, setGetData] = useState("no-data");
   const [inputValue, setInputValue] = useState("");
   const [formDisplay, setFormDisplay] = useState(false);
@@ -22,7 +26,8 @@ const ListContainer = () => {
       .then((res) => {
         if (res.status == 200) {
           setGetData("got-data");
-          setListData(res.data);
+          dispatch(displayList(res.data));
+          // setListData(res.data);
         } else {
           alert("Error Occured");
         }
@@ -36,7 +41,8 @@ const ListContainer = () => {
   const createNewList = () => {
     post(`boards/${id}/lists?name=${inputValue}`)
       .then((res) => {
-        setListData((prevData) => [...prevData, res.data]);
+        dispatch(createNewList(res.data));
+        // setListData((prevData) => [...prevData, res.data]);
       })
       .catch(() => {
         alert("Error Occured");
@@ -45,11 +51,12 @@ const ListContainer = () => {
 
   const archieveList = (listId) => {
     put(`lists/${listId}?closed=true`)
-      .then((res) => {
-        setListData((prevData) => {
-          const newData = prevData.filter(({ id }) => id !== res.data.id);
-          return newData;
-        });
+      .then(() => {
+        // setListData((prevData) => {
+        //   const newData = prevData.filter(({ id }) => id !== res.data.id);
+        //   return newData;
+        // });
+        dispatch(archieveList(listId));
       })
       .catch(() => {
         alert("Error Occured");
