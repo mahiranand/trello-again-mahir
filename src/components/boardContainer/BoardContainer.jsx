@@ -4,17 +4,23 @@ import LoadingScreen from "../loaders/LoadingScreen";
 import Error from "../error/Error";
 import Board from "./Board";
 import FormCreateBoard from "./FormCreateBoard";
+import { useDispatch, useSelector } from "react-redux";
+import { createBoard, displayBoard } from "../../redux/slice/boardSlice";
 
 const BoardContainer = () => {
-  const [boardData, setBoardData] = useState([]);
+  const dispatch = useDispatch();
+  const { boardData } = useSelector((state) => state.boards);
+  // const [boardData, setBoardData] = useState([]);
   const [getData, setGetData] = useState("no-data");
 
   useEffect(() => {
     get("members/me/boards")
       .then((res) => {
-        console.log(res);
         if (res.status == 200) {
-          setBoardData(res.data);
+          // setBoardData(res.data);
+          console.log(res.data);
+          const value = res.data;
+          dispatch(displayBoard(value));
           setGetData("got-data");
         } else alert("Error Occurred !!");
       })
@@ -26,7 +32,8 @@ const BoardContainer = () => {
   const makeNewBoard = (name) => {
     post(`boards/?name=${name}`)
       .then((res) => {
-        setBoardData((prevData) => [...prevData, res.data]);
+        // setBoardData((prevData) => [...prevData, res.data]);
+        dispatch(createBoard(res.data));
       })
       .catch(() => {
         alert("Error Occured");
