@@ -9,7 +9,6 @@ export const listSlice = createSlice({
   initialState,
   reducers: {
     displayList: (state, action) => {
-      console.log(action.payload);
       state.listData = action.payload;
     },
     createList: (state, action) => {

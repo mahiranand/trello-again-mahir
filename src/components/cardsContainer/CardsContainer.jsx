@@ -4,21 +4,25 @@ import Error from "../error/Error";
 import { Box, Button, LinearProgress, TextField } from "@mui/material";
 import CardComponent from "./CardComponent";
 import CloseIcon from "@mui/icons-material/Close";
+import { useDispatch, useSelector } from "react-redux";
+import { createCard, deleteThisCard, displayCard } from "../../redux/slice/cardSlice";
 
 // eslint-disable-next-line react/prop-types
-const CardsContainer = ({ id }) => {
-  const [cardsData, setCardsData] = useState([]);
+const CardsContainer = ({ id: listId }) => {
+  const dispatch = useDispatch();
+  const { cardsData } = useSelector((state) => state.cards);
+  // const [cardsData, setCardsData] = useState([]);
   const [getData, setGetData] = useState("no-data");
 
   const [showForm, setShowForm] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    get(`lists/${id}/cards`)
+    get(`lists/${listId}/cards`)
       .then((res) => {
         if (res.status == 200) {
           setGetData("got-data");
-          setCardsData(res.data);
+          dispatch(displayCard(res.data));
         } else {
           alert("Error Occured");
         }
@@ -30,9 +34,9 @@ const CardsContainer = ({ id }) => {
   }, []);
 
   const addNewCard = () => {
-    post(`cards?name=${inputValue}&idList=${id}`)
+    post(`cards?name=${inputValue}&idList=${listId}`)
       .then((res) => {
-        setCardsData((prevData) => [...prevData, res.data]);
+        dispatch(createCard(res.data));
       })
       .catch(() => {
         alert("Error Occured");
@@ -42,10 +46,7 @@ const CardsContainer = ({ id }) => {
   const deleteCard = (cardId) => {
     del(`cards/${cardId}`)
       .then(() => {
-        setCardsData((prevData) => {
-          const newData = prevData.filter(({ id }) => id !== cardId);
-          return newData;
-        });
+        dispatch(deleteThisCard(cardId))
       })
       .catch(() => {
         alert("Error Occurred!!");
@@ -75,15 +76,17 @@ const CardsContainer = ({ id }) => {
             },
           }}
         >
-          {cardsData.map(({ name, id }) => {
-            return (
-              <CardComponent
-                key={id}
-                id={id}
-                name={name}
-                deleteCard={deleteCard}
-              />
-            );
+          {cardsData.map(({ name, id, idList }) => {
+            if (listId == idList) {
+              return (
+                <CardComponent
+                  key={id}
+                  id={id}
+                  name={name}
+                  deleteCard={deleteCard}
+                />
+              );
+            }
           })}
         </Box>
         {showForm ? (
