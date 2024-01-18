@@ -3,7 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import icon from "../../assets/trello.svg";
 
 const ListWindowNavbar = () => {
-  const name = useLocation().state.name;
+  const { state } = useLocation();
+  let name;
+  if (state && state.name) {
+    name = state.name;
+  }
+  else{
+    name = "Mahir";
+  }
 
   return (
     <Box sx={{ flexGrow: 1, height: "9%" }}>
