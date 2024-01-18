@@ -1,4 +1,4 @@
-import { Chip } from "@mui/material";
+import { Chip, Modal } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckListContainer from "../checklistContainer/CheckListContainer";
 import { useState } from "react";
@@ -28,12 +28,14 @@ const CardComponent = ({ name, id, deleteCard }) => {
         }}
         deleteIcon={<DeleteIcon />}
       />
-      <CheckListContainer
-        id={id}
-        name={name}
-        showChecklist={showChecklist}
-        setShowChecklist={setShowChecklist}
-      />
+      <Modal open={showChecklist} onClose={() => setShowChecklist(false)}>
+        <CheckListContainer
+          id={id}
+          name={name}
+          showChecklist={showChecklist}
+          setShowChecklist={setShowChecklist}
+        />
+      </Modal>
     </div>
   );
 };
