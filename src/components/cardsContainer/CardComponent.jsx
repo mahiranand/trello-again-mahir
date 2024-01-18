@@ -32,7 +32,6 @@ const CardComponent = ({ name, id, deleteCard }) => {
         <CheckListContainer
           id={id}
           name={name}
-          showChecklist={showChecklist}
           setShowChecklist={setShowChecklist}
         />
       </Modal>

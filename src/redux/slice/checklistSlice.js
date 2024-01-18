@@ -9,7 +9,6 @@ export const checklistSlice = createSlice({
   initialState,
   reducers: {
     displayChecklist: (state, action) => {
-      console.log(action.payload);
       state.checklistData = action.payload;
     },
     checklistAdd: (state, action) => {

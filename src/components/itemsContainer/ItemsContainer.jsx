@@ -11,10 +11,19 @@ import {
 import ItemError from "../error/ItemError";
 import Checkitem from "./Checkitem";
 import SendIcon from "@mui/icons-material/Send";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  checkitemAdd,
+  checkitemDelete,
+  checkitemUpdata,
+  displayCheckitem,
+} from "../../redux/slice/checkitemSlice";
 
 // eslint-disable-next-line react/prop-types
 const ItemsContainer = ({ cardId, checkListId }) => {
-  const [checkitemsData, setCheckitemsData] = useState([]);
+  // const [checkitemsData, setCheckitemsData] = useState([]);
+  const { checkitemsData } = useSelector((state) => state.checkitems);
+  const dispatch = useDispatch();
   const [getData, setGetData] = useState("no-data");
   const [showForm, setShowForm] = useState(null);
   const [inputValue, setInputValue] = useState("");
@@ -24,7 +33,7 @@ const ItemsContainer = ({ cardId, checkListId }) => {
       .then((res) => {
         if (res.status == 200) {
           setGetData("got-data");
-          setCheckitemsData(res.data);
+          dispatch(displayCheckitem(res.data));
         } else {
           setGetData("error");
         }
@@ -38,7 +47,7 @@ const ItemsContainer = ({ cardId, checkListId }) => {
   const addCheckItem = () => {
     post(`checklists/${checkListId}/checkItems?name=${inputValue}`)
       .then((res) => {
-        setCheckitemsData((prevData) => [...prevData, res.data]);
+        dispatch(checkitemAdd(res.data));
       })
       .catch(() => {
         alert("Error Occured");
@@ -48,16 +57,8 @@ const ItemsContainer = ({ cardId, checkListId }) => {
   const updateCheckItem = (itemID, state) => {
     const newState = state == "complete" ? "incomplete" : "complete";
     put(`cards/${cardId}/checkItem/${itemID}?state=${newState}`)
-      .then((res) => {
-        setCheckitemsData((prevData) => {
-          const newData = prevData.map((data) => {
-            if (data.id == res.data.id) {
-              return res.data;
-            }
-            return data;
-          });
-          return newData;
-        });
+      .then(() => {
+        dispatch(checkitemUpdata({ id: itemID, status: newState }));
       })
       .catch(() => {
         alert("Error Occured!!");
@@ -67,10 +68,11 @@ const ItemsContainer = ({ cardId, checkListId }) => {
   const deleteCheckItem = (itemId) => {
     del(`checklists/${checkListId}/checkItems/${itemId}`)
       .then(() => {
-        setCheckitemsData((prevData) => {
-          const newData = prevData.filter(({ id }) => id !== itemId);
-          return newData;
-        });
+        // setCheckitemsData((prevData) => {
+        //   const newData = prevData.filter(({ id }) => id !== itemId);
+        //   return newData;
+        // });
+        dispatch(checkitemDelete(itemId));
       })
       .catch(() => {
         alert("Error Occurred!!");
@@ -118,16 +120,20 @@ const ItemsContainer = ({ cardId, checkListId }) => {
           />
         </div>
         <FormGroup sx={{ marginTop: "0.5rem" }}>
-          {checkitemsData.map(({ name, id, state }) => (
-            <Checkitem
-              key={id}
-              name={name}
-              state={state}
-              id={id}
-              deleteCheckItem={deleteCheckItem}
-              updateCheckItem={updateCheckItem}
-            />
-          ))}
+          {checkitemsData.map(({ name, id, state, idChecklist }) => {
+            if (checkListId == idChecklist) {
+              return (
+                <Checkitem
+                  key={id}
+                  name={name}
+                  state={state}
+                  id={id}
+                  deleteCheckItem={deleteCheckItem}
+                  updateCheckItem={updateCheckItem}
+                />
+              );
+            }
+          })}
         </FormGroup>
         {open ? (
           <Box
