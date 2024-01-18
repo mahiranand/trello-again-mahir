@@ -82,16 +82,22 @@ const ItemsContainer = ({ cardId, checkListId }) => {
   const open = Boolean(showForm);
 
   const findValue = () => {
-    if (checkitemsData.length === 0) {
+    const filteredCheckitems = checkitemsData.filter(
+      (item) => item.idChecklist === checkListId
+    );
+
+    if (filteredCheckitems.length === 0) {
       return 0;
     }
+
     let count = 0;
-    for (let data of checkitemsData) {
+    for (let data of filteredCheckitems) {
       if (data.state === "complete") {
         count++;
       }
     }
-    return parseFloat(((count / checkitemsData.length) * 100).toFixed(2));
+
+    return parseFloat(((count / filteredCheckitems.length) * 100).toFixed(2));
   };
 
   if (getData == "no-data") {
