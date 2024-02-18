@@ -70,7 +70,7 @@ const ListContainer = () => {
         <Stack
           direction={"row"}
           overflow={"scroll"}
-          height={"91%"}
+          height={"92%"}
           sx={{
             padding: "2rem",
             marginRight: "0",
