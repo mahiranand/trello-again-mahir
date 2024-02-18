@@ -13,7 +13,7 @@ const ListWindowNavbar = () => {
   }
 
   return (
-    <Box sx={{ flexGrow: 1, height: "8%" }}>
+    <Box sx={{ flexGrow: 1, height: "8vh" }}>
       <AppBar position="fixed">
         <div
           style={{
